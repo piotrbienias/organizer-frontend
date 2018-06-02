@@ -1,0 +1,4 @@
+{
+    "ENCRYPTION_PASSWORD": "my_password",
+    "ENCRYPTION_ALGORITHM": "aes-256-ctr"
+}

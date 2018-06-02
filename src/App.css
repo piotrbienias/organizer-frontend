@@ -1,0 +1,62 @@
+@import '~antd/dist/antd.css';
+
+#root {
+  height: 100%;
+}
+
+.app__container {
+  height: 100%;
+}
+
+.menu__container {
+  width: 20%;
+  float: left;
+}
+
+.content__container {
+  /* width: 70%; */
+  margin: 30px;
+  display: inline-block;
+}
+
+.topRow {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.main__row {
+  height: 100%;
+}
+
+.menu__col,
+.menu__col > ul {
+  height: 100%
+}
+
+.menu__col > ul {
+  padding-top: 30px;
+}
+
+
+.deleted-record {
+  background-color: #ffa39e;
+}
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all .3s;
+  margin-left: 15px;
+}
+
+.dynamic-delete-button:hover {
+  color: #777;
+}
+
+.dynamic-delete-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
