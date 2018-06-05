@@ -5,7 +5,8 @@ import {
     Input,
     DatePicker,
     Button,
-    Icon
+    Icon,
+    InputNumber
 } from 'antd';
 
 import moment from 'moment';
@@ -52,6 +53,9 @@ class ExpensesForm extends React.Component {
         const keys = form.getFieldValue('keys');
 
         var expenses = this.state.expenses;
+        if (expenses[index] && expenses[index].id) {
+            this.props.addDeletedExpense(expenses[index].id);
+        }
         delete expenses[index];
 
         form.setFieldsValue({
@@ -92,7 +96,7 @@ class ExpensesForm extends React.Component {
                             ],
                             initialValue: expense.value
                         })(
-                            <Input />
+                            <InputNumber min={0} step={0.01} placeholder="Wartość" />
                         )}
                     </FormItem>
                     <FormItem
@@ -114,7 +118,7 @@ class ExpensesForm extends React.Component {
                             ],
                             initialValue: expense.description
                         })(
-                            <Input style={{ width: '80%' }} />
+                            <Input style={{ width: '80%' }} placeholder="Opis" />
                         )}
                         {(
                             <Icon
