@@ -61,6 +61,12 @@ class SideMenu extends Component {
                     </Menu.Item>
                 )
             }
+
+            menuElements.push(
+                <Menu.Item key="kalendarz">
+                    <span href="/kalendarz/" rel="noopener noreferrer">Kalendarz</span>
+                </Menu.Item>
+            )
         }
 
         return menuElements;

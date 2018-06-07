@@ -20,6 +20,8 @@ import Car              from './car';
 import Dashboard        from './dashboard';
 import MyAccount        from './account';
 import Budget           from './budget';
+import EventsCalendar   from './calendar';
+import Event            from './calendar/event';
 
 
 
@@ -43,6 +45,8 @@ class App extends Component {
                 <Route path="/samochod" component={Car} />
                 <Route path="/moje-konto" component={MyAccount} />
                 <Route path="/wydatki" component={Budget} />
+                <Route exact path="/kalendarz" component={EventsCalendar} />
+                <Route path="/kalendarz/wydarzenia/:id(\d+)" component={Event} />
               </Col>
             </Row>
           </Col>
