@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Calendar,
-    Alert,
     Row,
     Popover,
     Button,
@@ -14,6 +13,8 @@ import { withRouter } from 'react-router-dom';
 
 import EventsCalendarAPI from './api/EventsCalendarAPI';
 import EventModal from './event/modal/EventModal';
+import NotAuthorized from './../common/NotAuthorized';
+import Auth from './../utils/auth';
 
 
 class EventsCalendar extends React.Component {
@@ -126,9 +127,9 @@ class EventsCalendar extends React.Component {
     }
 
     render() {
-        const { value, selectedValue } = this.state;
+        const { value } = this.state;
 
-        return (
+        return Auth.isAllowedToComponent('can-manage-events') ? (
             <Row>
                 <Row className="topRow" type="flex" justify="end">
                     <Button
@@ -146,7 +147,7 @@ class EventsCalendar extends React.Component {
                         fetchEvents={this.fetchEvents} />
                 </Row>
             </Row>
-        )
+        ) : <NotAuthorized />
     }
 
 }

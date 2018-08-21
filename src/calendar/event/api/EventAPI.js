@@ -16,6 +16,22 @@ class EventAPI extends BaseAPI {
         return this.api.delete(`/events/${eventId}?deleteAll=${deleteAll}`, { deleteAll: deleteAll });
     }
 
+    updateEvent(eventId, data) {
+        return this.api.put(`/events/${eventId}`, data);
+    }
+
+    deleteCycle(eventId) {
+        return this.api.put(`/events/${eventId}/delete_cycle`);
+    }
+
+    updateCycle(eventId, data) {
+        return this.api.put(`/events/${eventId}/update_cycle`, data);
+    }
+
+    getEventReminders(eventId) {
+        return this.api.get(`/events/${eventId}/reminders`);
+    }
+
 }
 
 

@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import Cookies from 'universal-cookie';
 
 import config from './../config.json';
+import { checkIfPermissionExists } from './functions';
 
 const cookies = new Cookies();
 
@@ -51,8 +52,11 @@ export default class Auth {
     }
 
     static getCurrentToken() {
-        console.log('getting current token');
         return Auth.decryptToken(cookies.get('_bat'));
+    }
+
+    static isAllowedToComponent(label) {
+        return checkIfPermissionExists(Auth.getCurrentUser().permissions, label);
     }
 
 }

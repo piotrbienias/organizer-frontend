@@ -1,0 +1,3 @@
+.single-reminder:hover > span {
+    display: inline-block !important;
+}

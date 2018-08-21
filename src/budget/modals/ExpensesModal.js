@@ -2,9 +2,6 @@ import React from 'react';
 
 import {
     Modal,
-    Row,
-    Form,
-    Input,
     message
 } from 'antd';
 
@@ -19,7 +16,7 @@ class ExpensesModal extends React.Component {
         super(props);
 
         this.state = {
-            visible: false,
+            expensesModalVisible: false,
             monthlyBudget: {},
             expenses: [],
             deletedExpenses: []
@@ -27,9 +24,9 @@ class ExpensesModal extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
-        if (nextProps.visible !== prevState.visible) {
+        if (nextProps.expensesModalVisible !== prevState.expensesModalVisible) {
             return {
-                visible: nextProps.visible,
+                expensesModalVisible: nextProps.expensesModalVisible,
                 monthlyBudget: nextProps.monthlyBudget,
                 deletedExpenses: []
             };
@@ -39,7 +36,7 @@ class ExpensesModal extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.visible && this.state.visible !== prevState.visible) {
+        if (this.state.expensesModalVisible && this.state.expensesModalVisible !== prevState.expensesModalVisible) {
             this.getMonthlyBudgetExpenses();
         }
     }
@@ -54,7 +51,8 @@ class ExpensesModal extends React.Component {
     }
 
     hideModal = () => {
-        this.setState({ visible: false });
+        this.setState({ expensesModalVisible: false });
+        this.props.hideExpensesModal();
     }
 
     handleSubmit = () => {
@@ -80,7 +78,7 @@ class ExpensesModal extends React.Component {
             MonthlyBudgetAPI.setMonthlyBudgetExpenses(monthlyBudgetId, filteredExpenses, this.state.deletedExpenses)
                 .then(response => {
                     message.success('Budzet został zaktualizowany');
-                    this.setState({ visible: false, deletedExpenses: [] });
+                    this.setState({ expensesModalVisible: false, deletedExpenses: [] });
                     this.props.triggerFetchMonthlyBudgets();
                 }).catch(e => {
                     message.error('Wystąpił błąd podczas wykonywania operacji');
@@ -113,7 +111,7 @@ class ExpensesModal extends React.Component {
         return (
             <Modal
                 title={this.getModalTitle()}
-                visible={this.state.visible}
+                visible={this.state.expensesModalVisible}
                 onCancel={this.hideModal}
                 onOk={this.handleSubmit}
                 width="750px">

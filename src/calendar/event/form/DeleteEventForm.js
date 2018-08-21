@@ -2,10 +2,14 @@ import React from 'react';
 import {
     Form,
     Checkbox,
-    Button
+    Button,
+    Modal
 } from 'antd';
 
 import EventAPI from './../api/EventAPI';
+
+
+const confirmModal = Modal.confirm;
 
 
 class DeleteEventForm extends React.Component {
@@ -14,15 +18,15 @@ class DeleteEventForm extends React.Component {
         super(props);
 
         this.state = {
-            eventId: null,
+            event: {},
             deleteAll: false
         };
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.eventId !== prevState.eventId) {
+        if (nextProps.event.id !== prevState.event.id) {
             return {
-                eventId: nextProps.eventId
+                event: nextProps.event
             };
         }
 
@@ -35,13 +39,11 @@ class DeleteEventForm extends React.Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
-
         const form = this.props.form;
 
         form.validateFields((err, values) => {
             
-            EventAPI.deleteEvent(this.state.eventId, values['deleteAll'])
+            EventAPI.deleteEvent(this.state.event.id, values['deleteAll'])
                 .then(response => {
                     console.log(response);
                 }).catch(e => {
@@ -50,23 +52,26 @@ class DeleteEventForm extends React.Component {
         });
     }
 
+    showConfirmModal = () => {
+        var self = this;
+
+        confirmModal({
+            title: 'Usuń wydarzenie',
+            content: `Czy na pewno chcesz usunąć ${this.state.event.name}?`,
+            okText: 'Usuń',
+            okType: 'danger',
+            cancelText: 'Anuluj',
+            onOk() {
+                self.handleSubmit();
+            }
+        });
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
 
-        const formItemLayout = {
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 12 }
-            },
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 4 }
-            }
-        };
-
         return (
-            <Form
-                onSubmit={this.handleSubmit}>
+            <Form>
                 <Form.Item>
                     {getFieldDecorator('deleteAll', {
                         rules: []
@@ -79,7 +84,7 @@ class DeleteEventForm extends React.Component {
                 <Form.Item>
                     <Button
                         type="danger"
-                        htmlType="submit">Usuń</Button>
+                        onClick={this.showConfirmModal}>Usuń</Button>
                 </Form.Item>
             </Form>
         )

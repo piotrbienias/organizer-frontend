@@ -13,6 +13,7 @@ import {
 import moment from 'moment';
 
 import UsersAPI from './../../../users/api/UsersAPI';
+import EventAPI from './../api/EventAPI';
 import Auth from './../../../utils/auth';
 
 
@@ -30,7 +31,8 @@ class EventForm extends React.Component {
             event: props.event || {},
             users: [],
             loadingUsers: true,
-            hideSubmit: props.hideSubmit
+            hideSubmit: props.hideSubmit,
+            disableRepeat: false
         };
     }
 
@@ -70,6 +72,15 @@ class EventForm extends React.Component {
             });
     }
 
+    fetchEvent = () => {
+        EventAPI.getEvent(this.state.event.id)
+            .then(response => {
+                this.setState({ event: response.data });
+            }).catch(e => {
+                message.error('Wystąpił błąd podczas aktualizowania danych');
+            });
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -80,8 +91,20 @@ class EventForm extends React.Component {
                 return;
             }
 
-            console.log(values);
+            values['updateAll'] = !!values['updateAll'];
+
+            EventAPI.updateEvent(values['id'], values)
+                .then(response => {
+                    this.fetchEvent();
+                    message.success('Wydarzenie zostało zaktualizowane');
+                }).catch(e => {
+                    message.error('Wystapił błąd podczas aktualizacji danych');
+                });
         });
+    }
+
+    disableRepeat = (value) => {
+        this.setState({ disableRepeat: value.target.checked });
     }
 
     updateAllCheckbox = () => {
@@ -94,7 +117,8 @@ class EventForm extends React.Component {
                     {getFieldDecorator('updateAll', {
                         rules: []
                     })(
-                        <Checkbox>Aktualizuj wszystkie powtórzenia</Checkbox>
+                        <Checkbox
+                            onChange={this.disableRepeat}>Aktualizuj wszystkie powtórzenia</Checkbox>
                     )}
                 </FormItem>
             )
@@ -165,6 +189,7 @@ class EventForm extends React.Component {
                         initialValue: this.state.event ? moment(this.state.event.date) : moment()
                     })(
                         <DatePicker
+                            disabled={this.state.disableRepeat}
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             placeholder="Data" />
@@ -209,20 +234,23 @@ class EventForm extends React.Component {
                         </Select>
                     )}
                 </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Powtarzaj co">
-                    {getFieldDecorator('repeatInterval', {
-                        rules: [],
-                        initialValue: this.state.event.repeatInterval ? this.state.event.repeatInterval : '0'
-                    })(
-                        <InputNumber
-                            min={0}
-                            step={1}
-                            formatter={value => `${value} ${value == 1 ? 'dzień' : 'dni'}`}
-                            parser={value => value.replace(/[^d\.]/g, '')} />
-                    )}
-                </FormItem>
+                { !this.state.event.id ? 
+                    <FormItem
+                        {...formItemLayout}
+                        label="Powtarzaj co">
+                        {getFieldDecorator('repeatInterval', {
+                            rules: [],
+                            initialValue: this.state.event.repeatInterval ? this.state.event.repeatInterval : '0'
+                        })(
+                            <InputNumber
+                                disabled={this.state.disableRepeat}
+                                min={0}
+                                step={1}
+                                formatter={value => `${value} ${value === '1' ? 'dzień' : 'dni'}`}
+                                parser={value => value.replace(/[^d.]/g, '')} />
+                        )}
+                    </FormItem>
+                : ''}
                 { !this.state.event.id ? 
                     <FormItem
                         {...formItemLayout}

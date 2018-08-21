@@ -7,7 +7,6 @@ import {
   Row,
   Col
 } from 'antd';
-import io from 'socket.io-client';
 
 import './App.css';
 
@@ -22,6 +21,10 @@ import MyAccount        from './account';
 import Budget           from './budget';
 import EventsCalendar   from './calendar';
 import Event            from './calendar/event';
+import Reminders        from './reminder';
+import SingleReminder   from './reminder/single';
+import Storage          from './storage';
+
 
 
 
@@ -47,6 +50,9 @@ class App extends Component {
                 <Route path="/wydatki" component={Budget} />
                 <Route exact path="/kalendarz" component={EventsCalendar} />
                 <Route path="/kalendarz/wydarzenia/:id(\d+)" component={Event} />
+                <Route exact path="/przypomnienia" component={Reminders} />
+                <Route path="/przypomnienia/:id(\d+)" component={SingleReminder} />
+                <Route path="/pliki/" component={Storage} />
               </Col>
             </Row>
           </Col>

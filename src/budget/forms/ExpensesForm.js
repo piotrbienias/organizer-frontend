@@ -72,10 +72,9 @@ class ExpensesForm extends React.Component {
             }
         };
 
-        let budgetHasExpenses = !!this.state.expenses;
         let expensesHTML = [];
 
-        this.state.expenses.map((expense, index) => {
+        this.state.expenses.forEach((expense, index) => {
             expensesHTML.push(
                 <Row
                     key={index}

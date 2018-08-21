@@ -4,10 +4,13 @@ import {
     Tabs,
     message
 } from 'antd';
+import { withRouter } from 'react-router-dom';
 
 import EventAPI from './api/EventAPI';
 import EventForm from './form/EventForm';
 import DeleteEventForm from './form/DeleteEventForm';
+import RepeatEventForm from './form/RepeatEventForm';
+import EventReminders from './reminders';
 
 
 const TabPane = Tabs.TabPane;
@@ -21,7 +24,8 @@ class Event extends React.Component {
         this.state = {
             eventId: this.props.match.params.id,
             event: {},
-            deleteAll: false
+            deleteAll: false,
+            activeKey: 'edit'
         };
     }
 
@@ -46,6 +50,15 @@ class Event extends React.Component {
         });
     }
 
+    changeActiveKey = (activeKey) => {
+        this.setState({ activeKey: activeKey });
+    }
+
+    reloadEvent = () => {
+        this.changeActiveKey('edit');
+        this.fetchEvent();        
+    }
+
     render() {
         return (
             <Row>
@@ -54,7 +67,8 @@ class Event extends React.Component {
                 </Row>
                 <Row>
                     <Tabs
-                        defaultActiveKey="edit">
+                        activeKey={this.state.activeKey}
+                        onTabClick={this.changeActiveKey}>
                         <TabPane
                             tab="Edycja"
                             key="edit">
@@ -62,10 +76,24 @@ class Event extends React.Component {
                                 event={this.state.event} />
                         </TabPane>
                         <TabPane
+                            tab="Cykl"
+                            key="cycle">
+                            <RepeatEventForm
+                                event={this.state.event}
+                                history={this.props.history}
+                                reloadEvent={this.reloadEvent} />
+                        </TabPane>
+                        <TabPane
+                            tab="Przypomnienia"
+                            key="reminders">
+                            <EventReminders
+                                event={this.state.event} />
+                        </TabPane>
+                        <TabPane
                             tab="Usuwanie"
                             key="delete">
                             <DeleteEventForm
-                                eventId={this.state.event.id} />
+                                event={this.state.event} />
                         </TabPane>
                     </Tabs>
                 </Row>
@@ -76,4 +104,4 @@ class Event extends React.Component {
 }
 
 
-export default Event;
+export default withRouter(Event);

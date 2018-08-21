@@ -45,6 +45,7 @@ export default function IsAuthorized(WrappedComponent) {
             cookies.remove('user');
             cookies.remove('_bat');
             this.setState({ isLoggedIn: false });
+            window.location.href = '/';
         }
 
         updateUserData = (data) => {
