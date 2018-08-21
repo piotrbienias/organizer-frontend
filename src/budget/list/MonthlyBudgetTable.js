@@ -168,6 +168,10 @@ class MonthlyBudgetTable extends React.Component {
         });
     }
 
+    hideExpensesModal = () => {
+        this.setState({ expensesModalVisible: false });
+    }
+
     countMonthlyBudgets = () => {
         MonthlyBudgetAPI.countMonthlyBudgets()
             .then(response => {
@@ -196,9 +200,10 @@ class MonthlyBudgetTable extends React.Component {
                     onChange={this.handleTableChange}
                     rowClassName={(record) => { return record.isDeleted ? 'deleted-record' : ''; }} />
                 <ExpensesModal
-                    visible={this.state.expensesModalVisible}
+                    expensesModalVisible={this.state.expensesModalVisible}
                     monthlyBudget={this.state.selectedMonthlyBudget}
-                    triggerFetchMonthlyBudgets={this.fetchMonthlyBudgets} />
+                    triggerFetchMonthlyBudgets={this.fetchMonthlyBudgets}
+                    hideExpensesModal={this.hideExpensesModal} />
             </div>
         )
     }

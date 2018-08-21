@@ -11,6 +11,9 @@ class SideMenu extends Component {
     static PERMISION_CAN_MANAGE_USERS               = 'can-manage-users';
     static PERMISSION_CAN_MANAGE_CAR_ACTIVITIES     = 'can-manage-car-activities';
     static PERMISSION_CAN_MANAGE_MONTHLY_BUDGETS    = 'can-manage-monthly-budgets';
+    static PERMISSION_CAN_MANAGE_EVENTS             = 'can-manage-events';
+    static PERMISSION_CAN_MANAGE_REMINDERS          = 'can-manage-reminders';
+    static PERMISSION_CAN_MANAGE_STORAGE            = 'can-manage-storage';
 
     constructor() {
         super();
@@ -61,6 +64,31 @@ class SideMenu extends Component {
                     </Menu.Item>
                 )
             }
+
+            if (checkIfPermissionExists(permissions, SideMenu.PERMISSION_CAN_MANAGE_EVENTS)) {
+                menuElements.push(
+                    <Menu.Item key="kalendarz">
+                        <span href="/kalendarz/" rel="noopener noreferrer">Kalendarz</span>
+                    </Menu.Item>
+                );
+            }
+
+            if (checkIfPermissionExists(permissions, SideMenu.PERMISSION_CAN_MANAGE_REMINDERS)) {
+                menuElements.push(
+                    <Menu.Item key="przypomnienia">
+                        <span href="/przypomnienia/" rel="noopener noreferrer">Przypomnienia</span>
+                    </Menu.Item>
+                );
+            }
+
+            if (checkIfPermissionExists(permissions, SideMenu.PERMISSION_CAN_MANAGE_STORAGE)) {
+                menuElements.push(
+                    <Menu.Item key="pliki">
+                        <span href="/pliki/" rel="noopener noreferrer">Pliki</span>
+                    </Menu.Item>
+                );
+            }
+            
         }
 
         return menuElements;

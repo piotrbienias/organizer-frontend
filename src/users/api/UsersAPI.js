@@ -8,10 +8,17 @@ class UsersAPI extends BaseAPI {
     }
 
     getUsers(options = {}) {
-        options.perPage = options.perPage ? options.perPage : 10;
-        options.page = options.page ? options.page : 1;
+        var url = '/users';
 
-        return this.api.get(`/users?perPage=${options.perPage}&page=${options.page}`);
+        if (options.perPage) {
+            url += `?perPage=${options.perPage}`;
+        }
+
+        if (options.page) {
+            url += url.indexOf('?') > 0 ? `&page=${options.page}` : `?page=${options.page}`;
+        }
+
+        return this.api.get(url);
     }
 
     getSingleUser(userId) {

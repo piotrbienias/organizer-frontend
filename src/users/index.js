@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Button } from 'antd';
 
-import UsersAPI from './api/UsersAPI';
 import UsersTable from './list/UsersTable';
 import UserModal from './modal/UserModal';
 
 import Auth from './../utils/auth';
 import NotAuthorized from './../common/NotAuthorized';
-import socketIOClient from 'socket.io-client';
 
 
 

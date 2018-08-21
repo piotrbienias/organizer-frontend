@@ -15,16 +15,20 @@ class MonthlyBudgetModal extends React.Component {
         super(props);
 
         this.state = {
-            visible: props.visible,
+            visible: props.visible || false,
             monthlyBudget: props.monthlyBudget
         };
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        return {
-            visible: nextProps.visible,
-            monthlyBudget: nextProps.monthlyBudget
-        };
+        if (nextProps.visible !== prevState.visible) {
+            return {
+                visible: nextProps.visible,
+                monthlyBudget: nextProps.monthlyBudget
+            };
+        }
+
+        return null;
     }
 
     hideModal = () => {
